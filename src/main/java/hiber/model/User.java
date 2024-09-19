@@ -1,7 +1,15 @@
 package hiber.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 
+@Setter
+@Getter
+@NoArgsConstructor
 @Entity
 @Table(name = "users")
 public class User {
@@ -19,43 +27,28 @@ public class User {
    @Column(name = "email")
    private String email;
 
-   public User() {}
-   
-   public User(String firstName, String lastName, String email) {
+   @OneToOne(cascade = CascadeType.ALL)
+   @JoinColumn(name = "car_id")
+   private Car car;
+
+   public User(String firstName, String lastName, String email){
+      this(firstName,lastName,email,null);
+   }
+
+   public User(String firstName, String lastName, String email, Car car){
       this.firstName = firstName;
       this.lastName = lastName;
       this.email = email;
+      this.car = car;
    }
 
-   public Long getId() {
-      return id;
-   }
+   @Override
+   public String toString() {
+      return  "Id = " + id + "\n" +
+              "First Name = " + firstName + "\n" +
+              "Last Name = " + lastName + "\n" +
+              "Email = " + email + "\n" +
+              "Car = " + (car != null ? car.toString() : "None") + "\n";
 
-   public void setId(Long id) {
-      this.id = id;
-   }
-
-   public String getFirstName() {
-      return firstName;
-   }
-
-   public void setFirstName(String firstName) {
-      this.firstName = firstName;
-   }
-
-   public String getLastName() {
-      return lastName;
-   }
-
-   public void setLastName(String lastName) {
-      this.lastName = lastName;
-   }
-
-   public String getEmail() {
-      return email;
-   }
-
-   public void setEmail(String email) {
-      this.email = email;
    }
 }
